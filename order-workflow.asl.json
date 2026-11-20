@@ -1,0 +1,29 @@
+{
+  "Comment": "Simple order approval workflow",
+  "StartAt": "ValidateOrder",
+  "States": {
+    "ValidateOrder": {
+      "Type": "Pass",
+      "Next": "CheckApproval"
+    },
+    "CheckApproval": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.approved",
+          "BooleanEquals": true,
+          "Next": "OrderCompleted"
+        }
+      ],
+      "Default": "OrderRejected"
+    },
+    "OrderCompleted": {
+      "Type": "Succeed"
+    },
+    "OrderRejected": {
+      "Type": "Fail",
+      "Error": "OrderNotApproved",
+      "Cause": "The order was not approved"
+    }
+  }
+}
